@@ -1,15 +1,14 @@
 package com.dh.clinica.controller;
 
 
-import com.dh.clinica.model.Odontologo;
-import com.dh.clinica.model.Turno;
-import com.dh.clinica.service.TurnoService;
+import com.dh.clinica.entity.Turno;
+import com.dh.clinica.service.impl.TurnoService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/turnos")
@@ -37,8 +36,8 @@ public class TurnoController {
     }
     @GetMapping("/buscar/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Integer id){
-        Turno turnoAEncontrar = turnoService.buscarPorId(id);
-        if(turnoAEncontrar != null){
+        Optional<Turno> turnoAEncontrar = turnoService.buscarPorId(id);
+        if(turnoAEncontrar.isPresent()){
             return ResponseEntity.ok(turnoAEncontrar);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El turno no fue encontrado");
@@ -46,8 +45,8 @@ public class TurnoController {
     }
     @PutMapping("/modificar")
     public ResponseEntity<?> modificarTurno(@RequestBody Turno turno) {
-        Turno turnoEncontrado = turnoService.buscarPorId(turno.getId());
-        if (turnoEncontrado != null) {
+        Optional<Turno> turnoEncontrado = turnoService.buscarPorId(turno.getId());
+        if (turnoEncontrado.isPresent()) {
             turnoService.modificarTurno(turno);
             String jsonResponse = "{\"mensaje\": \"El turno fue modificado\"}";
             return ResponseEntity.ok(jsonResponse);
@@ -57,8 +56,8 @@ public class TurnoController {
     }
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarTurno(@PathVariable Integer id){
-        Turno turnoEncontrado = turnoService.buscarPorId(id);
-        if(turnoEncontrado!= null){
+        Optional<Turno> turnoEncontrado = turnoService.buscarPorId(id);
+        if(turnoEncontrado.isPresent()){
             turnoService.eliminarTurno(id);
             String jsonResponse = "{\"mensaje\": \"El turno fue eliminado\"}";
             return ResponseEntity.ok(jsonResponse);

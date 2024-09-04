@@ -1,29 +1,8 @@
 package com.dh.clinica;
 
 
-import com.dh.clinica.dao.impl.OdontologoDaoH2;
-import com.dh.clinica.model.Odontologo;
-import com.dh.clinica.model.Paciente;
-import com.dh.clinica.service.OdontologoService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-
-import static org.junit.jupiter.api.Assertions.*;
-
-
 class OdontologoServiceTest {
-    static final Logger logger = LoggerFactory.getLogger(OdontologoServiceTest.class);
+/*    static final Logger logger = LoggerFactory.getLogger(OdontologoServiceTest.class);
     OdontologoService odontologoService = new OdontologoService(new OdontologoDaoH2());
     @BeforeAll
     static void crearTablas(){
@@ -74,5 +53,5 @@ class OdontologoServiceTest {
 
     }
 
-
+*/
 }

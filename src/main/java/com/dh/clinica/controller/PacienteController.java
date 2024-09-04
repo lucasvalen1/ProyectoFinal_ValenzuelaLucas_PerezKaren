@@ -1,12 +1,13 @@
 package com.dh.clinica.controller;
 
-import com.dh.clinica.model.Paciente;
-import com.dh.clinica.service.PacienteService;
+import com.dh.clinica.entity.Paciente;
+import com.dh.clinica.service.impl.PacienteService;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/paciente")
@@ -25,8 +26,8 @@ public class PacienteController {
 
     @GetMapping("/buscar/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Integer id){
-        Paciente paciente = pacienteService.buscarPorId(id);
-        if(paciente != null){
+        Optional<Paciente> paciente = pacienteService.buscarPorId(id);
+        if(paciente.isPresent()){
             return ResponseEntity.ok(paciente);
         } else {
              // ResponseEntity.status(HttpStatus.NOT_FOUND).body("paciente no encontrado");
@@ -42,8 +43,8 @@ public class PacienteController {
 
     @PutMapping("/modificar")
     public ResponseEntity<?> modificarPaciente(@RequestBody Paciente paciente) {
-        Paciente pacienteEncontrado = pacienteService.buscarPorId(paciente.getId());
-        if (pacienteEncontrado != null) {
+        Optional<Paciente> pacienteEncontrado = pacienteService.buscarPorId(paciente.getId());
+        if (pacienteEncontrado.isPresent()) {
             pacienteService.modificarPaciente(paciente);
             String jsonResponse = "{\"mensaje\": \"El paciente fue modificado\"}";
             return ResponseEntity.ok(jsonResponse);
@@ -53,8 +54,8 @@ public class PacienteController {
     }
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarPaciente(@PathVariable Integer id){
-        Paciente pacienteEncontrado = pacienteService.buscarPorId(id);
-        if(pacienteEncontrado!= null){
+        Optional<Paciente> pacienteEncontrado = pacienteService.buscarPorId(id);
+        if(pacienteEncontrado.isPresent()){
             pacienteService.eliminarPaciente(id);
             String jsonResponse = "{\"mensaje\": \"El paciente fue modificado\"}";
             return ResponseEntity.ok(jsonResponse);

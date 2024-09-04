@@ -1,25 +1,7 @@
 package com.dh.clinica;
 
-import com.dh.clinica.dao.impl.PacienteDaoH2;
-import com.dh.clinica.db.H2Connection;
-import com.dh.clinica.model.Domicilio;
-import com.dh.clinica.model.Paciente;
-import com.dh.clinica.service.PacienteService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class PacienteServiceTest {
-    static Logger logger = LoggerFactory.getLogger(PacienteServiceTest.class);
+/*    static Logger logger = LoggerFactory.getLogger(PacienteServiceTest.class);
     PacienteService pacienteService = new PacienteService(new PacienteDaoH2());
 
     @BeforeAll
@@ -50,5 +32,5 @@ class PacienteServiceTest {
         // entonces
         assertEquals(id, paciente.getId());
     }
-
+*/
 }

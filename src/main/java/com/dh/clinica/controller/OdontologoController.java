@@ -1,12 +1,13 @@
 package com.dh.clinica.controller;
 
-import com.dh.clinica.model.Odontologo;
-import com.dh.clinica.service.OdontologoService;
+import com.dh.clinica.entity.Odontologo;
+import com.dh.clinica.service.impl.OdontologoService;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/odontologo")
@@ -20,14 +21,14 @@ public class OdontologoController {
 
     @PostMapping("/guardar")
     public ResponseEntity<Odontologo> guardarOdontologo(@RequestBody Odontologo odontologo){
-        return ResponseEntity.ok(odontologoService.guardar(odontologo));
+        return ResponseEntity.ok(odontologoService.guardarOdontologo(odontologo));
     }
 
     @GetMapping("/buscar/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Integer id){
-        Odontologo odontologo = odontologoService.buscarPorId(id);
-        if(odontologo != null){
-            return ResponseEntity.ok(odontologo);
+        Optional<Odontologo> odontologo = odontologoService.buscarPorId(id);
+        if(odontologo.isPresent()){
+            return ResponseEntity.ok(odontologo.get());
         } else {
             // ResponseEntity.status(HttpStatus.NOT_FOUND).body("paciente no encontrado");
             //ResponseEntity.notFound().build();
@@ -42,8 +43,8 @@ public class OdontologoController {
 
     @PutMapping("/modificar")
     public ResponseEntity<?> modificarOdontologo(@RequestBody Odontologo odontologo) {
-        Odontologo odontologoEncontrado = odontologoService.buscarPorId(odontologo.getId());
-        if (odontologoEncontrado != null) {
+        Optional<Odontologo> odontologoEncontrado = odontologoService.buscarPorId(odontologo.getId());
+        if (odontologoEncontrado.isPresent()) {
             odontologoService.modificarOdontologo(odontologo);
             String jsonResponse = "{\"mensaje\": \"El odontologo fue modificado\"}";
             return ResponseEntity.ok(jsonResponse);
@@ -53,8 +54,8 @@ public class OdontologoController {
     }
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarOdontologo(@PathVariable Integer id){
-        Odontologo odontologoEncontrado = odontologoService.buscarPorId(id);
-        if(odontologoEncontrado!= null){
+        Optional<Odontologo> odontologoEncontrado = odontologoService.buscarPorId(id);
+        if(odontologoEncontrado.isPresent()){
             odontologoService.eliminarOdontologo(id);
             String jsonResponse = "{\"mensaje\": \"El odontologo fue eliminado\"}";
             return ResponseEntity.ok(jsonResponse);
