@@ -9,9 +9,13 @@ import com.dh.clinica.dto.response.TurnoResponseDto;
 import com.dh.clinica.entity.Odontologo;
 import com.dh.clinica.entity.Paciente;
 import com.dh.clinica.entity.Turno;
+import com.dh.clinica.exception.BadRequestException;
+import com.dh.clinica.exception.ResourceNotFoundException;
 import com.dh.clinica.repository.ITurnoRepository;
 import com.dh.clinica.service.ITurnoService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +26,8 @@ import java.util.Optional;
 
 @Service
 public class TurnoService implements ITurnoService {
+
+    private final Logger logger = LoggerFactory.getLogger(TurnoService.class);
     private ITurnoRepository turnoRepository;
     private PacienteService pacienteService;
     private OdontologoService odontologService;
@@ -47,9 +53,12 @@ public class TurnoService implements ITurnoService {
             turno.setFecha(LocalDate.parse(turnoRequestDto.getFecha()));
             // voy a persistir el turno
             turnoDesdeDb = turnoRepository.save(turno);
+            logger.info("turnos guardado "+turnoDesdeDb);
 
             //turnoARetornar = convertirTurnoAResponse(turnoDesdeDb);
             turnoARetornar = mappearATurnoResponse(turnoDesdeDb);
+        } else{
+            throw new BadRequestException("El turno no fue agregado porque no se encontro el paciente u odontologo");
         }
 
         return turnoARetornar;
@@ -61,6 +70,7 @@ public class TurnoService implements ITurnoService {
         TurnoResponseDto turnoResponseDto = null;
         if(turnoDesdeDb.isPresent()){
             turnoResponseDto= mappearATurnoResponse(turnoDesdeDb.get());
+            logger.info("turnos encontrado  "+turnoDesdeDb);
         }
         return Optional.ofNullable(turnoResponseDto);
 
@@ -72,6 +82,7 @@ public class TurnoService implements ITurnoService {
         List<TurnoResponseDto> turnoRespuesta = new ArrayList<>();
         for(Turno t: turnos){
             TurnoResponseDto turnoAxuliar = mappearATurnoResponse(t);
+            logger.info("turnos "+t);
             turnoRespuesta.add(turnoAxuliar);
         }
         return turnoRespuesta;
@@ -87,16 +98,24 @@ public class TurnoService implements ITurnoService {
                     LocalDate.parse(turnoModificarDto.getFecha()));
             // voy a persistir el turno
             turnoRepository.save(turno);
+            logger.info("turnos modificado  "+turno);
         }
     }
 
     @Override
     public void eliminarTurno(Integer id) {
-        turnoRepository.deleteById(id);
+        Optional<Turno> turno = turnoRepository.findById(id);
+        if (turno.isPresent()){
+            turnoRepository.deleteById(id);
+            logger.info("turnos eliminado "+turno);
+        } else {
+            throw new ResourceNotFoundException("El turno " +id+" no fue encontrado");
+        }
     }
 
     @Override
     public List<Turno> buscarTurnoPorApellido(String apellidoPaciente) {
+        logger.info("turnos encontrado"+turnoRepository.buscarTurnoPorApellido(apellidoPaciente));
         return turnoRepository.buscarTurnoPorApellido(apellidoPaciente);
     }
 
