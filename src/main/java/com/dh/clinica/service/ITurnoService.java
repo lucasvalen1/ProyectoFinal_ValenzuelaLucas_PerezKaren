@@ -17,4 +17,5 @@ public interface ITurnoService {
 
     void modificarTurno(TurnoModificarDto turnoModificarDto);
     void eliminarTurno(Integer id);
+    List <Turno> buscarTurnoPorApellido(String apellidoPaciente);
 }

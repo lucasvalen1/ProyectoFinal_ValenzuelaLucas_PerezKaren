@@ -68,5 +68,10 @@ public class TurnoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/buscarporapellido/{apellidoPaciente}")
+    public ResponseEntity<List<Turno>> buscarTurnoApellido(@PathVariable String apellidoPaciente){
+        return ResponseEntity.ok(turnoService.buscarTurnoPorApellido(apellidoPaciente));
+    }
 }
 

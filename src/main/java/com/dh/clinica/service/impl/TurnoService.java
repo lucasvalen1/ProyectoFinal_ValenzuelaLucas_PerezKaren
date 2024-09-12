@@ -11,6 +11,8 @@ import com.dh.clinica.entity.Paciente;
 import com.dh.clinica.entity.Turno;
 import com.dh.clinica.repository.ITurnoRepository;
 import com.dh.clinica.service.ITurnoService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,6 +25,8 @@ public class TurnoService implements ITurnoService {
     private ITurnoRepository turnoRepository;
     private PacienteService pacienteService;
     private OdontologoService odontologService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     public TurnoService(ITurnoRepository turnoRepository, PacienteService pacienteService, OdontologoService odontologService) {
         this.turnoRepository = turnoRepository;
@@ -44,7 +48,8 @@ public class TurnoService implements ITurnoService {
             // voy a persistir el turno
             turnoDesdeDb = turnoRepository.save(turno);
 
-            turnoARetornar = convertirTurnoAResponse(turnoDesdeDb);
+            //turnoARetornar = convertirTurnoAResponse(turnoDesdeDb);
+            turnoARetornar = mappearATurnoResponse(turnoDesdeDb);
         }
 
         return turnoARetornar;
@@ -55,7 +60,7 @@ public class TurnoService implements ITurnoService {
         Optional<Turno> turnoDesdeDb = turnoRepository.findById(id);
         TurnoResponseDto turnoResponseDto = null;
         if(turnoDesdeDb.isPresent()){
-            turnoResponseDto= convertirTurnoAResponse(turnoDesdeDb.get());
+            turnoResponseDto= mappearATurnoResponse(turnoDesdeDb.get());
         }
         return Optional.ofNullable(turnoResponseDto);
 
@@ -66,7 +71,7 @@ public class TurnoService implements ITurnoService {
         List<Turno> turnos = turnoRepository.findAll();
         List<TurnoResponseDto> turnoRespuesta = new ArrayList<>();
         for(Turno t: turnos){
-            TurnoResponseDto turnoAxuliar = convertirTurnoAResponse(t);
+            TurnoResponseDto turnoAxuliar = mappearATurnoResponse(t);
             turnoRespuesta.add(turnoAxuliar);
         }
         return turnoRespuesta;
@@ -90,6 +95,11 @@ public class TurnoService implements ITurnoService {
         turnoRepository.deleteById(id);
     }
 
+    @Override
+    public List<Turno> buscarTurnoPorApellido(String apellidoPaciente) {
+        return turnoRepository.buscarTurnoPorApellido(apellidoPaciente);
+    }
+
     private TurnoResponseDto convertirTurnoAResponse (Turno turnoDesdeDb){
         OdontologoResponseDto odontologoResponseDto = new OdontologoResponseDto(
                 turnoDesdeDb.getOdontologo().getId(), turnoDesdeDb.getOdontologo().getMatricula(),
@@ -108,5 +118,10 @@ public class TurnoService implements ITurnoService {
         return turnoARetornar;
     }
 
-
+    private TurnoResponseDto mappearATurnoResponse(Turno turno){
+        TurnoResponseDto turnoResponseDto = modelMapper.map(turno, TurnoResponseDto.class);
+        turnoResponseDto.setOdontologoResponseDto(modelMapper.map(turno.getOdontologo(), OdontologoResponseDto.class));
+        turnoResponseDto.setPacienteResponseDto(modelMapper.map(turno.getPaciente(), PacienteResponseDto.class));
+        return turnoResponseDto;
+    }
 }
