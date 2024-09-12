@@ -1,7 +1,42 @@
 package com.dh.clinica;
+import com.dh.clinica.entity.Odontologo;
+import com.dh.clinica.service.impl.OdontologoService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
+import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
+@Transactional
 class OdontologoServiceTest {
+    @Autowired
+
+    OdontologoService odontologoService;
+    Odontologo odontologo;
+
+    @BeforeEach
+    void crearOdontologo(){
+        odontologo= new Odontologo();
+        odontologo.setApellido("Martinez");
+        odontologo.setNombre("Jose");
+        odontologo.setMatricula("A632");
+        odontologo = odontologoService.guardarOdontologo(odontologo);
+
+}
+    @Test
+    @DisplayName("Testear que un odontologo se guarde")
+    void caso1(){
+
+
+        assertNotNull(odontologo.getId());
+    }
+
 /*    static final Logger logger = LoggerFactory.getLogger(OdontologoServiceTest.class);
     OdontologoService odontologoService = new OdontologoService(new OdontologoDaoH2());
     @BeforeAll
@@ -26,8 +61,7 @@ class OdontologoServiceTest {
     @DisplayName("Testear que un odontologo se guarde")
     void caso1(){
 
-        Odontologo odontologo = new Odontologo("A632","JOSE","MARTINEZ");
-        Odontologo odontologo1 = odontologoService.guardar(odontologo);
+
         assertNotNull(odontologo1.getId());
     }
 
