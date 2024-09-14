@@ -21,48 +21,66 @@
       class="navbar bg-dark navbar-expand-lg bg-body-tertiary"
       data-bs-theme="dark"
     >
-      <div class="container-fluid">
-        <a class="navbar-brand" href="index.html">Clinica Odontologica</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Clínica Odontológica</a>
+      <button class="navbar-toggler" 
+              type="button" 
+              data-bs-toggle="collapse" 
+              data-bs-target="#navbarNavDropdown" 
+              aria-controls="navbarNavDropdown" 
+              aria-expanded="false" 
+              aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Gestión de Pacientes
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item" href="listar_pacientes.html"
+              >Listar Pacientes</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="agregar_pacientes.html"
+              >Agregar Pacientes</a
+            >
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Gestión de Pacientes
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="dropdown-item" href="listar_pacientes.html"
-                    >Listar Paciente</a
-                  >
-                </li>
-                <li>
-                  <a class="dropdown-item" href="agregar_pacientes.html"
-                    >Agregar Paciente</a
-                  >
-                </li>
-              </ul>
-            </li>
+              <li class="nav-item dropdown">
+                  <a 
+                  class="nav-link dropdown-toggle" 
+                  href="#" role="button" 
+                  data-bs-toggle="dropdown" 
+                  aria-expanded="false">
+                      Gestión de Odontólogos
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="listar_Odontologos.html"> Listar Odontólogos</a></li>
+                      <li><a class="dropdown-item" href="agregar_odontologo.html">Agregar Odontólogo</a></li>
+                  </ul>
+              </li>
           </ul>
-        </div>
       </div>
-    </nav>
+  </div>
+  </nav>
+    
     <div class="container-xl">
       <h1 class="mt-5">Pacientes</h1>
       <table class="table table-striped-columns" id="pacienteTable">

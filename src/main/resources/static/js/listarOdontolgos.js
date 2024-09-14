@@ -21,15 +21,16 @@ function fetchOdontologos() {
 
         row.innerHTML = `
               <td>${odontologo.id}</td>
-              <td>${odontologo.apellido}</td>
-              <td>${odontologo.nombre}</td>
               <td>${odontologo.matricula}</td>
-              
+              <td>${odontologo.nombre}</td>
+              <td>${odontologo.apellido}</td>
               <td>
-                <button class="btn btn-primary btn-sm" onclick="editodontologo(${odontologo.id}, 
-                '${odontologo.apellido}','${odontologo.nombre}', '${odontologo.matricula}', 
-                )">Modificar</button>
-                <button class="btn btn-danger btn-sm" onclick="deleteodontologo(${odontologo.id})">Eliminar</button>
+                <button class="btn btn-primary btn-sm" onclick="editOdontologo(
+                 ${odontologo.id}, 
+                '${odontologo.matricula}', 
+                '${odontologo.nombre}', 
+                '${odontologo.apellido}')">Modificar</button>
+                <button class="btn btn-danger btn-sm" onclick="deleteOdontologo(${odontologo.id})">Eliminar</button>
               </td>
             `;
 
@@ -44,25 +45,24 @@ function fetchOdontologos() {
 // Función para abrir el modal y cargar los datos del odontologo
 editOdontologo = function (
   id,
-  apellido,
-  nombre,
   matricula,
- 
+  nombre,
+  apellido 
 ) {
-  currentodontologoId = id;
-  document.getElementById("editApellido").value = apellido;
+  currentOdontologoId = id;
+  document.getElementById("editMatricula").value = matricula;
   document.getElementById("editNombre").value = nombre;
-  document.getElementById("editDni").value = matricula;
+  document.getElementById("editApellido").value = apellido;
   editModal.show();
 };
 
 // Función para editar un odontologo
 editForm.addEventListener("submit", function (event) {
   event.preventDefault();
-  const apellido = document.getElementById("editApellido").value;
-  const nombre = document.getElementById("editNombre").value;
   const matricula = document.getElementById("editMatricula").value;
-  
+  const nombre = document.getElementById("editNombre").value;
+  const apellido = document.getElementById("editApellido").value;
+    
   //modificar un odontologo
   fetch(`odontologo/modificar`, {
     method: "PUT",
@@ -71,9 +71,9 @@ editForm.addEventListener("submit", function (event) {
     },
     body: JSON.stringify({
       id: currentOdontologoId,
+      matricula,
       nombre,
       apellido,
-      matricula,
       
     }),
   })
@@ -81,7 +81,7 @@ editForm.addEventListener("submit", function (event) {
     .then((data) => {
       console.log(data);
       alert("odontologo modificado con éxito");
-      fetchodontologos();
+      fetchOdontologos();
       editModal.hide();
     })
     .catch((error) => {
@@ -109,4 +109,4 @@ deleteOdontologo = function (id) {
 };
 
 // Llamar a la función para obtener y mostrar los odontólogos
-fetchodOntologos();
+fetchOdontologos();
